@@ -1,0 +1,14 @@
+{
+	"name" : "hsbo/iksy",
+	"description" : "mein IKSY Projekt",
+	"authors" : [{
+			"name" : "Frank Brockmann"
+		}
+	],
+	"minimum-stability" : "stable",
+	"require" : {
+		"smarty/smarty" : "^5.5",
+		"goat1000/svggraph": "^3.20",
+		"tecnickcom/tcpdf": "^6.10"
+	}
+}
