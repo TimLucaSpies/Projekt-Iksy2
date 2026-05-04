@@ -5,9 +5,9 @@ class DbFunctions
     
     public static function connectWithDatabase()
     {
-        $link = mysqli_connect('127.0.0.1', 'wiInf', 'wiInf');    
+        $link = mysqli_connect('pav050.hs-bochum.de', 'iksy2_stadion', 'SkDFdezU8[aWkgtv');    
         mysqli_set_charset($link, 'utf8');
-        $query = "USE wiInf_gruppe1_Kartenverkauf";      
+        $query = "USE iksy2_stadion";      
         self::executeQuery($link, $query);
         return $link;
     }
