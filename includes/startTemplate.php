@@ -20,4 +20,5 @@ $smarty->assign('SESSION_vorname',         $_SESSION['vorname']    ?? '');
 $smarty->assign('SESSION_nachname',        $_SESSION['nachname']   ?? '');
 $smarty->assign('SESSION_rolle',           $_SESSION['rolle']      ?? '');
 $smarty->assign('SESSION_benutzerID',      $_SESSION['benutzerID'] ?? null);
+
 ?>
