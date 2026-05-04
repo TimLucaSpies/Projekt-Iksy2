@@ -7,7 +7,7 @@ require_once("klassen/Sicherheit.php");
 
 // Bereits eingeloggt → weiterleiten
 if (Sicherheit::istEingeloggt()) {
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 
@@ -41,19 +41,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($fehler)) {
         $benutzer = TicketEntity::holeBenutzerPerEmail($link, $email);
 
-        if ($benutzer && Sicherheit::pruefePasswort($passwort, $benutzer['passwortHash'])) {
-            // Session befüllen
-            $_SESSION['benutzerID'] = $benutzer['benutzerID'];
+        if ($benutzer && Sicherheit::pruefePasswort($passwort, $benutzer['passwort_hash'])) {            
+            $_SESSION['benutzerID'] = $benutzer['id'];
             $_SESSION['vorname']    = $benutzer['vorname'];
             $_SESSION['nachname']   = $benutzer['nachname'];
             $_SESSION['email']      = $benutzer['email'];
-            $_SESSION['rolle']      = $benutzer['rolle'];
+            $_SESSION['rolle']      = $benutzer['rolle'] ?? 'kunde';
+            $_SESSION['profilbild'] = $benutzer['profilbild'] ?? null;
 
-            // Admin → Adminbereich, sonst Startseite
-            if ($benutzer['rolle'] === 'admin') {
-                header('Location: admin.php');
+            $adminEmails = ['admin@schalke04.de'];
+            if (in_array($benutzer['email'], $adminEmails)) {
+                header('Location: newfileAdmin.php');
             } else {
-                header('Location: index.php');
+                header('Location: landingpage.php');
             }
             exit();
         } else {

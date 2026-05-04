@@ -6,7 +6,7 @@ require_once("klassen/TicketEntity.php");
 require_once("klassen/Sicherheit.php");
 
 if (Sicherheit::istEingeloggt()) {
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 
@@ -64,7 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['email']      = $benutzer['email'];
                 $_SESSION['rolle']      = $benutzer['rolle'];
                 
-                header('Location: index.php?registriert=1');
+                
+                
+                header('Location: login.php');
                 exit();
             } else {
                 $fehler[] = "Registrierung fehlgeschlagen. Bitte versuche es erneut.";
