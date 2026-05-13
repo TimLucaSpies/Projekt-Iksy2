@@ -19,8 +19,8 @@ class TicketEntity {
     
     public static function holeBenutzerPerEmail($link, $email) {
         $email = DbFunctions::escape($link, $email);
-        $query = "SELECT id, email, passwort_hash, vorname, nachname
-                  FROM benutzer WHERE email = '$email'";
+        $query = "SELECT id, email, passwort_hash, vorname, nachname, rolle, profilbild
+          FROM benutzer WHERE email = '$email'";
         return DbFunctions::getHashFromFirstRow($link, $query);
     }
     
@@ -160,16 +160,16 @@ class TicketEntity {
     // BESTELLUNGEN
     // --------------------------------------------------------
     
-    public static function erstelleBestellung($link, $benutzerID, $arenaID, $spielID, $preis) {
+    public static function erstelleBestellung($link, $benutzerID, $arenaID, $spielID) {
         $benutzerID = (int) $benutzerID;
         $arenaID    = (int) $arenaID;
         $spielID    = (int) $spielID;
-        $preis      = number_format((float) $preis, 2, '.', '');
-        $query = "INSERT INTO bestellungen (benutzer_id, arena_id, spiel_id, preis_bezahlt)
-                  VALUES ($benutzerID, $arenaID, $spielID, $preis)";
+        $query = "INSERT INTO bestellungen (benutzer_id, arena_id, spiel_id)
+              VALUES ($benutzerID, $arenaID, $spielID)";
         DbFunctions::executeQuery($link, $query);
         return DbFunctions::getFirstFieldOfResult($link, "SELECT LAST_INSERT_ID()");
     }
+    
     
     public static function holeBestellungenVonBenutzer($link, $benutzerID) {
         $benutzerID = (int) $benutzerID;
@@ -189,15 +189,15 @@ class TicketEntity {
     public static function holeBestellungPerID($link, $bestellungID, $benutzerID) {
         $bestellungID = (int) $bestellungID;
         $benutzerID   = (int) $benutzerID;
-        $query = "SELECT b.id, b.preis_bezahlt, b.bestellt_am,
-                         s.gegner, s.datum, s.heim_auswaerts,
-                         a.block, a.reihe, a.platz,
-                         p.beschreibung AS kategorie
-                  FROM bestellungen b
-                  JOIN spiele        s ON b.spiel_id = s.id
-                  JOIN arena         a ON b.arena_id = a.id
-                  JOIN preiskategorie p ON a.preiskategorie_id = p.id
-                  WHERE b.id = $bestellungID AND b.benutzer_id = $benutzerID";
+        $query = "SELECT b.id, b.bestellt_am,
+                 s.gegner, s.datum, s.heim_auswaerts, s.id AS spiel_id,
+                 a.block, a.reihe, a.platz,
+                 p.beschreibung AS kategorie, p.preis
+          FROM bestellungen b
+          JOIN spiele        s ON b.spiel_id  = s.id
+          JOIN arena         a ON b.arena_id  = a.id
+          JOIN preiskategorie p ON a.preiskategorie_id = p.id
+          WHERE b.id = $bestellungID AND b.benutzer_id = $benutzerID";
         return DbFunctions::getHashFromFirstRow($link, $query);
     }
     
