@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$ROOT_DIR = '/home/iksy/iksy05/ProjektGruppe1';  // Pfad ggf. anpassen
+$ROOT_DIR = '/var/www/html/iksy05/Projekt-Iksy2-master';
 
 require_once("$ROOT_DIR/vendor/autoload.php");
 
@@ -20,5 +20,6 @@ $smarty->assign('SESSION_vorname',         $_SESSION['vorname']    ?? '');
 $smarty->assign('SESSION_nachname',        $_SESSION['nachname']   ?? '');
 $smarty->assign('SESSION_rolle',           $_SESSION['rolle']      ?? '');
 $smarty->assign('SESSION_benutzerID',      $_SESSION['benutzerID'] ?? null);
+$smarty->assign('SESSION_profilbild', $_SESSION['profilbild'] ?? null);
 
 ?>
