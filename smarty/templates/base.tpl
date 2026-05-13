@@ -318,11 +318,20 @@ footer a:hover {
 
 				<ul class="navbar-nav ms-auto">
 					{if isset($SESSION_eingeloggt) && $SESSION_eingeloggt}
-					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
-						href="#" role="button" data-bs-toggle="dropdown">
-							{$SESSION_vorname|escape} {$SESSION_nachname|escape} </a>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle d-flex align-items-center gap-2"
+						href="#" role="button" data-bs-toggle="dropdown"> {if
+							isset($SESSION_profilbild) && $SESSION_profilbild} <img
+							src="uploads/profilbilder/{$SESSION_profilbild|escape}"
+							style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.4);">
+							{else}
+							<div
+								style="width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: white; border: 2px solid rgba(255, 255, 255, 0.4); flex-shrink: 0;">
+								{$SESSION_vorname|truncate:1:''|upper}{$SESSION_nachname|truncate:1:''|upper}
+							</div> {/if} {$SESSION_vorname|escape}
+					</a>
 						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item" href="landingpage.php">Mein Profil</a></li>
+							<li><a class="dropdown-item" href="mein_profil.php">Mein Profil</a></li>
 							<li><hr class="dropdown-divider"></li>
 							<li><a class="dropdown-item" href="logout.php">Abmelden</a></li>
 						</ul></li> {else}

@@ -218,7 +218,7 @@
                         <div style="font-size:0.85rem; color:#5a7aaa;">{$SESSION_email|escape}</div>
                     </div>
                 </div>
-                <a href="profil.php" class="btn-s04-outline w-100 text-center d-block" style="font-size:0.9rem;">
+                <a href="mein_profil.php" class="btn-s04-outline w-100 text-center d-block" style="font-size:0.9rem;">
                     Profil anzeigen
                 </a>
                 <a href="meine_bestellungen.php" class="btn-s04-outline w-100 text-center d-block mt-2" style="font-size:0.9rem;">
