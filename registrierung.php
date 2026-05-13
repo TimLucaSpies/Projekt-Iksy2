@@ -4,6 +4,7 @@ require_once("includes/startTemplate.php");
 require_once("klassen/DbFunctions.php");
 require_once("klassen/TicketEntity.php");
 require_once("klassen/Sicherheit.php");
+require_once("klassen/ProfilbildHelper.php");
 
 if (Sicherheit::istEingeloggt()) {
     header('Location: login.php');
@@ -53,18 +54,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $vornameSauber  = Sicherheit::bereinigeName($vorname);
             $nachnameSauber = Sicherheit::bereinigeName($nachname);
             
-            $erfolg = TicketEntity::registriereBenutzer($link, $email, $passwort, $vornameSauber, $nachnameSauber);
+            $erfolg = TicketEntity::registriereBenutzer(
+                $link, $email, $passwort, $vornameSauber, $nachnameSauber
+                );
             
             if ($erfolg) {
-                // Direkt einloggen nach Registrierung
                 $benutzer = TicketEntity::holeBenutzerPerEmail($link, $email);
-                $_SESSION['benutzerID'] = $benutzer['benutzerID'];
+                
+                // Session befüllen
+                $_SESSION['benutzerID'] = $benutzer['id'];
                 $_SESSION['vorname']    = $benutzer['vorname'];
                 $_SESSION['nachname']   = $benutzer['nachname'];
                 $_SESSION['email']      = $benutzer['email'];
-                $_SESSION['rolle']      = $benutzer['rolle'];
+                $_SESSION['rolle']      = $benutzer['rolle'] ?? 'kunde';
+                $_SESSION['profilbild'] = null;
                 
-                
+                // Profilbild verarbeiten falls hochgeladen
+                if (isset($_FILES['profilbild']) && $_FILES['profilbild']['error'] !== UPLOAD_ERR_NO_FILE) {
+                    $dateiname = ProfilbildHelper::verarbeiteUpload(
+                        $_FILES['profilbild'],
+                        (int) $benutzer['id']
+                        );
+                    if ($dateiname) {
+                        // In DB speichern
+                        BenutzerEntity::aktualisiereProfilbild($link, $benutzer['id'], $dateiname);
+                        $_SESSION['profilbild'] = $dateiname;
+                    }
+                }
                 
                 header('Location: login.php');
                 exit();

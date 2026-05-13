@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['email']      = $benutzer['email'];
             $_SESSION['rolle']      = $benutzer['rolle'] ?? 'kunde';
             $_SESSION['profilbild'] = $benutzer['profilbild'] ?? null;
-
+            
             $adminEmails = ['admin@schalke04.de'];
             if (in_array($benutzer['email'], $adminEmails)) {
                 header('Location: newfileAdmin.php');
