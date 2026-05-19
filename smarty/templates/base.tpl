@@ -358,7 +358,7 @@ footer a:hover {
 	<footer class="text-center">
 		<div class="container">
 			&copy; {$smarty.now|date_format:"%Y"} FC Schalke 04 &nbsp;|&nbsp; <a
-				href="#">Impressum</a> &nbsp;|&nbsp; <a href="#">Datenschutz</a>
+				href="impressum.php">Impressum</a> &nbsp;|&nbsp; <a href="#">Datenschutz</a>
 		</div>
 	</footer>
 
