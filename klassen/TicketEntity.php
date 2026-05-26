@@ -38,6 +38,60 @@ class TicketEntity {
         return DbFunctions::getFirstFieldOfResult($link, $query) > 0;
     }
     
+    // Gesamtanzahl verkaufter Tickets
+    public static function getGesamtTickets($link) {
+        $query = "SELECT COUNT(*) FROM bestellungen";
+        return DbFunctions::getFirstFieldOfResult($link, $query) ?? 0;
+    }
+    
+    // Gesamteinnahmen (Preis aus preiskategorie)
+    public static function getGesamtEinnahmen($link) {
+        $query = "SELECT COALESCE(SUM(p.preis), 0)
+              FROM bestellungen b
+              JOIN arena a ON b.arena_id = a.id
+              JOIN preiskategorie p ON a.preiskategorie_id = p.id";
+        return DbFunctions::getFirstFieldOfResult($link, $query) ?? 0;
+    }
+    
+    // Anzahl registrierter Kunden
+    public static function getGesamtKunden($link) {
+        $query = "SELECT COUNT(*) FROM benutzer WHERE rolle = 'kunde' OR rolle IS NULL";
+        return DbFunctions::getFirstFieldOfResult($link, $query) ?? 0;
+    }
+    
+    // Tickets pro Spiel für Chart
+    public static function getTicketsProSpiel($link) {
+        $query = "SELECT s.gegner, COUNT(b.id) AS anzahl
+              FROM spiele s
+              LEFT JOIN bestellungen b ON b.spiel_id = s.id
+              GROUP BY s.id, s.gegner
+              ORDER BY s.datum ASC";
+        return DbFunctions::getAssociativeResultArray($link, $query);
+    }
+    
+    // Einnahmen pro Spiel für Chart
+    public static function getEinnahmenProSpiel($link) {
+        $query = "SELECT s.gegner, COALESCE(SUM(p.preis), 0) AS einnahmen
+              FROM spiele s
+              LEFT JOIN bestellungen b ON b.spiel_id = s.id
+              LEFT JOIN arena a ON b.arena_id = a.id
+              LEFT JOIN preiskategorie p ON a.preiskategorie_id = p.id
+              GROUP BY s.id, s.gegner
+              ORDER BY s.datum ASC";
+        return DbFunctions::getAssociativeResultArray($link, $query);
+    }
+    
+    // Tickets pro Kategorie für Donut-Chart
+    public static function getTicketsProKategorie($link) {
+        $query = "SELECT p.beschreibung, COUNT(b.id) AS anzahl
+              FROM preiskategorie p
+              LEFT JOIN arena a ON a.preiskategorie_id = p.id
+              LEFT JOIN bestellungen b ON b.arena_id = a.id
+              GROUP BY p.id, p.beschreibung
+              ORDER BY p.preis DESC";
+        return DbFunctions::getAssociativeResultArray($link, $query);
+    }
+    
     // --------------------------------------------------------
     // SPIELE
     // --------------------------------------------------------

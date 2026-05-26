@@ -117,7 +117,7 @@ class Sicherheit {
 
     static function requireAdmin(): void {
         if (!self::istAdmin()) {
-            header('Location: index.php');
+            header('Location: admin.php');
             exit();
         }
     }
