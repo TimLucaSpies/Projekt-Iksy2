@@ -49,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['rolle']      = $benutzer['rolle'] ?? 'kunde';
             $_SESSION['profilbild'] = $benutzer['profilbild'] ?? null;
             
-            $adminEmails = ['admin@schalke04.de'];
-            if (in_array($benutzer['email'], $adminEmails)) {
-                header('Location: newfileAdmin.php');
+            
+            if (($benutzer['rolle'] ?? 'kunde') === 'admin') {                
+                header('Location: admin.php');
             } else {
                 header('Location: landingpage.php');
             }

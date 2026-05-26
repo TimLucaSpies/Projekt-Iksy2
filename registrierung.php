@@ -5,9 +5,10 @@ require_once("klassen/DbFunctions.php");
 require_once("klassen/TicketEntity.php");
 require_once("klassen/Sicherheit.php");
 require_once("klassen/ProfilbildHelper.php");
+require_once("klassen/BenutzerEntity.php");
 
 if (Sicherheit::istEingeloggt()) {
-    header('Location: login.php');
+    header('Location: landingpage.php');
     exit();
 }
 
@@ -82,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 
-                header('Location: login.php');
+                header('Location: landingpage.php');
                 exit();
             } else {
                 $fehler[] = "Registrierung fehlgeschlagen. Bitte versuche es erneut.";
